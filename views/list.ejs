@@ -1,0 +1,75 @@
+<%- include("header") -%>
+
+<div class="row">
+  <div class="col-lg-1">
+  </div>
+  <!-- Section: Lists  -->
+  <div class="col-lg-4">
+
+    <div class="box box-left heading">
+      <a href="/"><h1> Home </h1></a>
+    </div>
+
+    <div class="box box-left">
+
+      <% for (i=0; i< listButton.length; i++) { %>
+        <% if (i !== 0) { %>
+          <div class="item heading">
+            <a href="/<%= listButton[i].name %>"><p id="color"><%= listButton[i].name %></p></a>
+            <form class="item" action="/removeList" method="post">
+              <button type="submit" name="removedListName" value="<%= listButton[i].name %>">-</button>
+            </form>
+          </div>
+        <% } %>
+      <% } %>
+
+      <form class="item" action="/newList" method="post">
+
+        <div class="input-group">
+          <input type="text"  class="form-control last-input" name="newList" placeholder="Add new list ..." autocomplete="off">
+          <div class="input-group-append button-left">
+            <button type="submit">+</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+
+<!-- Section: Tasks -->
+  <div class="col-lg-7">
+
+    <div class="box heading">
+      <h1> <%= listTitle %> </h1>
+    </div>
+
+    <div class="box">
+      <% newListItems.forEach(function(item) { %>
+
+      <!-- Add form to be able to POST (send) the "chechedTaskID" back to the server to remove it: -->
+      <form action="/delete" method="post">
+        <div class="item">
+          <!-- When the checkbox got checked, it will submit its value ==> onChange="this.form.submit()" -->
+          <input type="checkbox" name="checkbox" value="<%=item._id%>" onChange="this.form.submit()">
+          <p><%=item.name%></p>
+        </div>
+        <!-- hidden input to send additional info to the server, and it's hidden for the user. -->
+        <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+      </form>
+
+
+      <% }); %>
+
+      <form class="item" action="/" method="post">
+        <input type="text" name="newItem" placeholder="Add new task ..." autocomplete="off">
+        <button type="submit" name="list" value= "<%= listTitle %>" >+</button>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+<%- include("footer") -%>
